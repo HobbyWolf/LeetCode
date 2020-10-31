@@ -15,7 +15,7 @@ using std::max;
 using std::list;
 using std::find;
 
-vector<vector<vector<int>>> master;
+vector<vector<int>> master;
 
 void place_queens(int, int, list<int>, list<int>, list<int>, vector<int>);
 
@@ -25,8 +25,10 @@ void solveNQueens(int n) {
 	list<int> col, sub_cell, add_cell, col_temp;
 	for(int i = 1; i<=n ; i++)
 		col.push_back(i);
-	for(int j = 1; j<n/2.0+1; j++)
+	for(int j = 1; j<=n; j++)
 	{
+		sub_cell.clear();
+		add_cell.clear();
 		vector<int> queen_pos;
 		queen_pos.reserve(n);
 		queen_pos.emplace_back(j);
@@ -34,17 +36,20 @@ void solveNQueens(int n) {
 		sub_cell.push_back(j-1);
 		add_cell.push_back(j+1);
 		col_temp.remove(j);
-		std::cout<<"1 - >"<<j<<std::endl;
 		place_queens(2, n, col_temp, sub_cell, add_cell, queen_pos);
+	}
+	for(auto k: master)
+	{
+		for(auto j: k)
+			std::cout<<j<<"->";
+		std::cout<<std::endl;
 	}
 }
 
 void place_queens(int start, int nq, list<int> colq, list<int> sub_cellq, list<int> add_cellq, vector<int> queen_posq)
 {
 	if(start>nq)
-	{
-		
-	}
+		master.push_back(queen_posq);
 	while(start <= nq)
 	{
 		for(auto a:colq)
@@ -59,7 +64,7 @@ void place_queens(int start, int nq, list<int> colq, list<int> sub_cellq, list<i
 			if(it_sub == sub_cellq.end() && it_add == add_cellq.end())
 			{
 				queen_posq_temp.push_back(a);
-				std::cout<<start<<"- >"<<a<<std::endl;
+				// std::cout<<start<<"- >"<<a<<std::endl;
 				sub_cellq_temp.push_back(a-start);
 				add_cellq_temp.push_back(a+start);
 				colq_temp.remove(a);
