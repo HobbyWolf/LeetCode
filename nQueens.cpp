@@ -19,7 +19,26 @@ vector<vector<int>> master;
 
 void place_queens(int, int, list<int>, list<int>, list<int>, vector<int>);
 
-void solveNQueens(int n) {
+vector<vector<string>> store_queen(vector<vector<int>> master_q, int n)
+{
+	vector<vector<string>> queens;
+
+	for(auto comb: master_q)
+	{
+		vector<string> board;
+		board.reserve(n);
+		for(auto row:comb)
+		{
+			string q('.', n);
+			q[row] = 'Q';
+			board.push_back(q);
+		}
+		queens.push_back(board);
+	}
+	return queens;
+}
+
+vector<vector<string>> solveNQueens(int n) {
 
 
 	list<int> col, sub_cell, add_cell, col_temp;
@@ -44,6 +63,7 @@ void solveNQueens(int n) {
 			std::cout<<j<<"->";
 		std::cout<<std::endl;
 	}
+	return store_queen(master, n);
 }
 
 void place_queens(int start, int nq, list<int> colq, list<int> sub_cellq, list<int> add_cellq, vector<int> queen_posq)
@@ -64,7 +84,6 @@ void place_queens(int start, int nq, list<int> colq, list<int> sub_cellq, list<i
 			if(it_sub == sub_cellq.end() && it_add == add_cellq.end())
 			{
 				queen_posq_temp.push_back(a);
-				// std::cout<<start<<"- >"<<a<<std::endl;
 				sub_cellq_temp.push_back(a-start);
 				add_cellq_temp.push_back(a+start);
 				colq_temp.remove(a);
@@ -77,5 +96,5 @@ void place_queens(int start, int nq, list<int> colq, list<int> sub_cellq, list<i
 
 int main()
 {
-	solveNQueens(4);
+	solveNQueens(5);
 }
