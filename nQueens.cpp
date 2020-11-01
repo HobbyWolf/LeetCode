@@ -30,7 +30,7 @@ vector<vector<string>> store_queen(vector<vector<int>> master_q, int n)
 		for(auto row:comb)
 		{
 			string q(n, '.');
-			q[row-1] = 'Q';
+			q[row] = 'Q';
 			board.push_back(q);
 		}
 		queens.push_back(board);
@@ -42,7 +42,7 @@ vector<vector<string>> solveNQueens(int n) {
 
 
 	vector<int> column(n, 1), sub_cell(2*n-1, 1), add_cell(2*n-1, 1), queen_pos(n, -1);
-	place_queens(2, n, column, sub_cell, add_cell, queen_pos);
+	place_queens(0, n, column, sub_cell, add_cell, queen_pos);
 	return store_queen(master, n);
 }
 
