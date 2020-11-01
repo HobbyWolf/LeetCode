@@ -17,7 +17,7 @@ using std::find;
 
 vector<vector<int>> master;
 
-void place_queens(int, int, list<int>, list<int>, list<int>, vector<int>);
+void place_queens(int, int, vector<int>, vector<int>, vector<int>, vector<int>);
 
 vector<vector<string>> store_queen(vector<vector<int>> master_q, int n)
 {
@@ -41,22 +41,10 @@ vector<vector<string>> store_queen(vector<vector<int>> master_q, int n)
 vector<vector<string>> solveNQueens(int n) {
 
 
-	list<int> col, sub_cell, add_cell, col_temp;
-	for(int i = 1; i<=n ; i++)
-		col.push_back(i);
-	for(int j = 1; j<=n; j++)
-	{
-		sub_cell.clear();
-		add_cell.clear();
-		vector<int> queen_pos;
-		queen_pos.reserve(n);
-		queen_pos.emplace_back(j);
-		col_temp = col;
-		sub_cell.push_back(j-1);
-		add_cell.push_back(j+1);
-		col_temp.remove(j);
-		place_queens(2, n, col_temp, sub_cell, add_cell, queen_pos);
-	}
+	vector<int> col(n, 1), sub_cell(2*n-1, 1), add_cell(2*n-1, 1), queen_pos(n, -1);
+
+	place_queens(2, n, col, sub_cell, add_cell, queen_pos);
+
 	return store_queen(master, n);
 }
 
