@@ -41,40 +41,36 @@ vector<vector<string>> store_queen(vector<vector<int>> master_q, int n)
 vector<vector<string>> solveNQueens(int n) {
 
 
-	vector<int> col(n, 1), sub_cell(2*n-1, 1), add_cell(2*n-1, 1), queen_pos(n, -1);
-
-	place_queens(2, n, col, sub_cell, add_cell, queen_pos);
-
+	vector<int> column(n, 1), sub_cell(2*n-1, 1), add_cell(2*n-1, 1), queen_pos(n, -1);
+	place_queens(2, n, column, sub_cell, add_cell, queen_pos);
 	return store_queen(master, n);
 }
 
-void place_queens(int start, int nq, list<int> colq, list<int> sub_cellq, list<int> add_cellq, vector<int> queen_posq)
+void place_queens(int row, int nq, vector<int> columnq, vector<int> sub_cellq, vector<int> add_cellq, vector<int> queen_posq)
 {
-	if(start>nq)
-		master.push_back(queen_posq);
-	while(start <= nq)
+	if(row==nq)
 	{
-		for(auto a:colq)
+		master.push_back(queen_posq);
+		return;
+	}
+
+	for(int col = 0; col < nq; col++)
+	{
+		if(columnq[col] && sub_cellq[nq-1 + col - row] && add_cellq[col + row])
 		{
-			auto queen_posq_temp = queen_posq;
-			int start_temp = start;
-			auto colq_temp = colq;
-			auto sub_cellq_temp = sub_cellq;
-			auto add_cellq_temp = add_cellq;
-			auto it_sub = find(sub_cellq.begin(), sub_cellq.end(), a-start);
-			auto it_add = find(add_cellq.begin(), add_cellq.end(), a+start);
-			if(it_sub == sub_cellq.end() && it_add == add_cellq.end())
-			{
-				queen_posq_temp.push_back(a);
-				sub_cellq_temp.push_back(a-start);
-				add_cellq_temp.push_back(a+start);
-				colq_temp.remove(a);
-				place_queens(++start_temp, nq, colq_temp, sub_cellq_temp, add_cellq_temp, queen_posq_temp);
-			}
+			queen_posq[row] = col;
+			columnq[col] = 0;
+			sub_cellq[nq-1 + col - row] = 0;
+			add_cellq[col + row] = 0;
+			place_queens(row+1, nq, columnq, sub_cellq, add_cellq, queen_posq);
+			queen_posq[row] = -1;
+			columnq[col] = 1;
+			sub_cellq[nq-1 + col - row] = 1;
+			add_cellq[col + row]	= 1;
 		}
-		break;
 	}
 }
+
 
 int main()
 {
