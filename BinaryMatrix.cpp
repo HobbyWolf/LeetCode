@@ -27,16 +27,16 @@ int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
 		if(grid[0][0] != 0 || grid[m-1][n-1] != 0)
 			return -1;
 
-		queue<pair<int,int>> binQueue;
-		binQueue.push(pair<int,int>(0,0));
+		vector<int> binVector;
+		binVector.push_back(0);
 		grid[0][0] = 1;
-
+		unsigned int k = 0;
 		vector<vector<int>> directions = {{1,1}, {0,1}, {1,0}, {0,-1}, {-1,0}, {-1,-1}, {1,-1}, {-1,1}};
-		while(!binQueue.empty())
+		while(k < binVector.size())
 		{
-			auto top = binQueue.front();
-			int x = top.first;
-			int y = top.second;
+			auto top = binVector[k];
+			int x = top / m;
+			int y = top % m;
 			if(x == m-1 && y == n-1)
 				return grid[x][y];
 
@@ -45,12 +45,12 @@ int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
 				int dx = x + dir[0], dy = y + dir[1];
 				if(dx > -1 && dx < m && dy > -1 && dy < n && grid[dx][dy] == 0)
 				{
-					binQueue.push(pair<int,int>(dx,dy));
+					binVector.push_back(dx*m + dy);
 					grid[dx][dy] = grid[x][y] + 1;
 				}
 
 			}
-			binQueue.pop();
+			k++;
 		}
 		return -1;
 
