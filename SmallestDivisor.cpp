@@ -6,29 +6,37 @@ using std::sort;
 using std::upper_bound;
 using std::vector;
 
-int smallestDivisor(vector<int>& nums, int threshold) {
-	int res = 1, sum = 1000001, i;
-	sort(nums.begin(), nums.end());
-	for( ; sum>threshold ; res++){
-		sum = 0;
-		auto it = nums.begin();
+int get_Sum(vector<int>& nums, int res)
+    {
+        int sum = 0, i;
+        auto it = nums.begin();
 		auto new_it = it;
-		for(i = nums[0]/res; new_it!=nums.end(); i++)
+		for(i = 1; new_it!=nums.end(); i++)
 		{
 			sum+=((i-1)*(new_it-it));
 			it = new_it;
 			new_it = upper_bound(it, nums.end(), i*res);
 		}
 		sum+=(--i*(nums.end()-it));
+    return sum;
+}
+int smallestDivisor(vector<int>& nums, int threshold) {
+	int left = 1, right = 1000000, mid, sum;
+	sort(nums.begin(), nums.end());
+    while(left<right){
+		mid = (left+right)/2;
+        sum = get_Sum(nums, mid);
+        if(sum>threshold)
+            left = mid + 1;
+        else
+            right = mid;
 	}
-
-
-	return --res;
+	return left;
 }
 
 int main()
 {
-	 vector<int> nums = {2,3,5,7,11};
-	 int threshold = 11;
+	 vector<int> nums = {19};
+	 int threshold = 5;
 	 std::cout<<smallestDivisor(nums, threshold);
 }
